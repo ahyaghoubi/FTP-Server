@@ -101,5 +101,3 @@ This FTP server runs in plain text and is not secure for use over the internet, 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
