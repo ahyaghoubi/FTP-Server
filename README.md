@@ -31,7 +31,7 @@ This FTP server is designed for local network use or testing purposes and can be
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/ahyaghoubi/ftp-server.git
+   git clone https://github.com/ahyaghoubi/FTP-Server.git
    cd ftp-server
    ```
 
