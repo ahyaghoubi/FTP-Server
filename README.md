@@ -57,7 +57,7 @@ This FTP server is designed for local network use or testing purposes and can be
 
 2. **Run the server with custom username, password, and directory**:
    ```bash
-   python ftp_server.py -u "myuser" -p "mypassword" -d "C://Users/amirhy/Desktop"
+   python ftp_server.py -u "myuser" -p "mypassword" -d "C://Users/{your username}/Desktop"
    ```
 
 3. **Run the server with a custom username and password, using the current directory**:
