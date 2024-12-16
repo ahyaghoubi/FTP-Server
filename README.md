@@ -1,104 +1,71 @@
-# FTP Server with Command-Line Arguments
+# FTP Server with User Input Setup
 
 ## Description
 
-This Python-based FTP server allows users to easily set up a local FTP server with customizable settings via command-line arguments. The server can be configured with a specific username, password, directory to serve, and port number. The `pyftpdlib` library is used to handle the FTP functionality, making it easy to create and manage FTP servers in Python.
-
-By running the script with different parameters, you can specify:
-- **FTP Username**: The username required to log in to the server.
-- **FTP Password**: The password for authenticating users.
-- **Directory**: The folder on your machine that will be shared via FTP.
-- **Port**: The port on which the FTP server will listen.
-
-This FTP server is designed for local network use or testing purposes and can be easily customized to fit specific needs.
+This Python-based FTP server enables users to set up a local FTP server interactively via terminal prompts. Built using the `pyftpdlib` library, it supports customizable configurations for the FTP username, password, shared directory, and port. The server is designed for local network use or testing purposes, offering flexibility and ease of use.
 
 ## Features
 
-- **Simple Setup**: Easily start an FTP server with just a few commands.
-- **Customizable**: Provide custom FTP usernames, passwords, directories, and ports via command-line arguments.
-- **Default Values**: Defaults for username (`user`), password (`pass`), directory (current working directory), and port (2121) for quick setup.
-- **Permissions**: Full read-write permissions are granted to the specified user for the shared directory.
-- **Passive Mode**: Configurable passive mode ports for compatibility with NAT/firewalls.
-- **Cross-Platform**: Compatible with Windows, macOS, and Linux, provided the appropriate permissions are set.
+- **Interactive Setup**: Configure the FTP server by entering the username, password, shared directory, and port when prompted.
+- **Default Values**: Defaults provided for username (`user`), password (`pass`), directory (current working directory), and port (`2121`) for quick setup.
+- **Comprehensive Permissions**: Full read-write permissions (`elradfmw`) for the authenticated user.
+- **Passive Mode**: Configured passive mode ports (`60000-60100`) for NAT/firewall compatibility.
+- **Cross-Platform**: Compatible with Windows, macOS, and Linux.
+- **Logging**: Informative logs for server activities and configuration details.
+- **Graceful Shutdown**: Handles `KeyboardInterrupt` (Ctrl+C) for clean termination.
 
 ## Requirements
 
-- **Python 3.x**: This script is compatible with Python 3.
-- **pyftpdlib**: A lightweight FTP server library for Python. You can install it via `pip`:
+- **Python 3.x**: Ensure Python 3 is installed.
+- **pyftpdlib**: Install via `pip`:
   ```bash
   pip install pyftpdlib
   ```
 
 ## Installation
 
-1. Clone this repository:
+1. Clone the repository:
    ```bash
    git clone https://github.com/ahyaghoubi/FTP-Server.git
    cd FTP-Server
    ```
 
-2. Install the required dependencies:
+2. Install dependencies:
    ```bash
    pip install pyftpdlib
    ```
 
 ## Usage
 
-### Command-Line Arguments
-
-- **`-u`, `--username`**: Specify the username for FTP authentication. (Default: `user`)
-- **`-p`, `--password`**: Specify the password for FTP authentication. (Default: `pass`)
-- **`-d`, `--directory`**: Specify the directory to share via FTP. (Default: Current working directory)
-- **`--port`**: Specify the port for the FTP server to listen on. (Default: 2121)
-
-### Examples
-
-1. **Run the server with default settings** (username: `user`, password: `pass`, directory: current directory, port: 2121):
+1. Run the script:
    ```bash
    python ftp_server.py
    ```
 
-2. **Run the server with custom username, password, and directory**:
-   ```bash
-   python ftp_server.py -u "myuser" -p "mypassword" -d "/path/to/folder"
-   ```
+2. Follow the prompts:
+   - Enter a username (or press Enter for the default: `user`).
+   - Enter a password (or press Enter for the default: `pass`).
+   - Specify the directory to share (or press Enter for the default: current working directory).
+   - Specify the port (or press Enter for the default: `2121`).
 
-3. **Run the server with a custom port**:
-   ```bash
-   python ftp_server.py --port 2121
-   ```
-
-4. **Run the server with a custom directory but default username and password**:
-   ```bash
-   python ftp_server.py -d "/home/user/myfolder"
-   ```
-
-### Starting the FTP Server
-
-Once the server is running, it will listen on all available network interfaces (`0.0.0.0`) on the specified port. You can connect to the server from another machine on your local network using an FTP client like FileZilla or a command-line FTP client, using the provided username and password.
-
-**Important**: If running on a privileged port (e.g., 21), elevated privileges may be required:
-
-```bash
-sudo python ftp_server.py
-```
+3. Once started, the server listens on all network interfaces (`0.0.0.0`) on the specified port. Use an FTP client like FileZilla or a command-line FTP client to connect using the provided credentials.
 
 ### Default Behavior
 
-- The FTP server will run indefinitely (`serve_forever`), allowing multiple clients to connect and interact with the shared directory.
-- FTP permissions are set to allow full read and write access for the authenticated user (`elradfmw` permissions).
-- If no username, password, or directory is specified, the defaults (`user`, `pass`, and current working directory) will be used.
+- Full permissions (`elradfmw`) are granted to the specified user for the shared directory.
+- Defaults are used for username, password, directory, and port if no inputs are provided.
+- The server runs indefinitely (`serve_forever`) and handles multiple connections.
 
 ## Security Notice
 
-This FTP server runs in plain text and is not secure for use over the internet, as passwords and data are transmitted unencrypted. It is intended for local network use or testing purposes only. For secure file transfers, consider using SFTP or FTPS.
+This FTP server transmits data, including passwords, in plain text and is intended for local network use only. Avoid using it over the internet unless secured with additional measures like FTPS or SFTP.
 
 ## Troubleshooting
 
-- **Permission Issues**: Ensure that the directory you want to share has the appropriate read/write permissions for the user running the server.
-- **Port Availability**: If the server fails to start on the specified port, ensure it is not in use by another application. To change the port, use the `--port` argument.
-- **Firewall and NAT**: If clients cannot connect, ensure that the firewall allows the specified port and that passive mode ports are configured and open in NAT/firewall settings.
+- **Invalid Directory**: If the provided directory does not exist, the server will prompt you until a valid directory is entered.
+- **Port Conflicts**: Ensure the chosen port is not in use. The server will prompt you to re-enter the port if issues occur.
+- **Firewall and NAT**: Open the specified and passive mode ports in your firewall or router for successful connections.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
