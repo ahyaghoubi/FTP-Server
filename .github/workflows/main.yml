@@ -31,12 +31,8 @@ jobs:
       - name: Extract Version Tag
         shell: bash
         run: |
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-          else
-            VERSION=$(echo "${GITHUB_REF}" | sed 's|refs/tags/||')
-            echo "VERSION=${VERSION}" >> $GITHUB_ENV
-          fi
+          VERSION="${GITHUB_REF#refs/tags/}"
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Build Executable with PyInstaller
         run: |
