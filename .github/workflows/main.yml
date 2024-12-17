@@ -40,8 +40,7 @@ jobs:
             pyinstaller --onefile --windowed --name server_setup_windows_${{ env.VERSION }} server_setup.py
           elif [ "${{ runner.os }}" == "macOS" ]; then
             pyinstaller --onefile --windowed --name server_setup_macos_${{ env.VERSION }} server_setup.py
-            # Remove unnecessary macOS files
-            rm -f dist/*.icns dist/Info.plist
+            rm -f dist/*.icns dist/Info.plist  # Remove macOS-specific files
           else
             pyinstaller --onefile --name server_setup_linux_${{ env.VERSION }} server_setup.py
           fi
