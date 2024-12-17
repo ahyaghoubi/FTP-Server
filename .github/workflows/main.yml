@@ -29,9 +29,14 @@ jobs:
           pip install pyinstaller pyftpdlib
 
       - name: Extract Version Tag
+        shell: bash
         run: |
-          VERSION=$(echo "${GITHUB_REF}" | sed 's|refs/tags/||')
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          else
+            VERSION=$(echo "${GITHUB_REF}" | sed 's|refs/tags/||')
+            echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          fi
 
       - name: Build Executable with PyInstaller
         run: |
@@ -68,7 +73,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Release ${{ env.VERSION }}
+          name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref }}
           files: ./artifacts/**/*.*
         env:
