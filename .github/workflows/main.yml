@@ -1,15 +1,15 @@
 name: Build and Release Executables
 
-# Trigger the workflow on push to tags or allow manual triggering
+# Trigger on version tags and allow manual triggering
 on:
   push:
     tags:
-      - "v*.*.*"  # Trigger on version tags like "v1.0.0"
-  workflow_dispatch:  # Allow manual triggering of the workflow from GitHub Actions UI
+      - "v*.*.*"  # Trigger on tags like v1.0.0
+  workflow_dispatch:
 
 jobs:
   build:
-    name: Build Executables for ${{ matrix.os }}
+    name: Build Executable for ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -31,16 +31,23 @@ jobs:
 
       - name: Build Executable with PyInstaller
         run: |
-          pyinstaller --onefile --windowed --hidden-import=pyftpdlib.handlers \
-                      --hidden-import=pyftpdlib.servers --hidden-import=pyftpdlib.authorizers \
-                      server_setup.py
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            pyinstaller --onefile --windowed --name server_setup_windows server_setup.py
+          elif [ "${{ runner.os }}" == "macOS" ]; then
+            pyinstaller --onefile --windowed --name server_setup_macos server_setup.py
+          else
+            pyinstaller --onefile --name server_setup_linux server_setup.py
+          fi
         shell: bash
 
       - name: Upload Executable as Artifact
         uses: actions/upload-artifact@v3
         with:
           name: server_setup_${{ matrix.os }}
-          path: dist/*
+          path: |
+            dist/server_setup_windows.exe
+            dist/server_setup_macos
+            dist/server_setup_linux
 
   release:
     name: Create GitHub Release
@@ -53,11 +60,17 @@ jobs:
         with:
           path: ./artifacts
 
+      - name: List Artifacts (Debugging)
+        run: ls -R ./artifacts
+
       - name: Create Release and Upload Files
         uses: softprops/action-gh-release@v1
         with:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
-          files: ./artifacts/**/* 
+          files: |
+            ./artifacts/server_setup_windows/*
+            ./artifacts/server_setup_macos/*
+            ./artifacts/server_setup_linux/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
