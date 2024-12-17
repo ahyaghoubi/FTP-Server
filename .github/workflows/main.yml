@@ -71,6 +71,7 @@ jobs:
         with:
           name: Release v1.0.0
           tag_name: v1.0.0
-          files: ./artifacts/**/*.*
+          files: |
+            ./artifacts/**/*.*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
