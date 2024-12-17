@@ -15,12 +15,12 @@ A simple, cross-platform graphical application to configure and launch an FTP se
 
 ---
 
-## **How to Use**
+### **How to Use**
 
 1. **Download the Executable**:
-   - Windows: [server_setup_windows.exe](#)
-   - macOS: [server_setup_macos](#)
-   - Linux: [server_setup_linux](#)
+   - Windows: [server_setup_windows.exe](https://github.com/ahyaghoubi/FTP-Server/releases)
+   - macOS: [server_setup_macos](https://github.com/ahyaghoubi/FTP-Server/releases)
+   - Linux: [server_setup_linux](https://github.com/ahyaghoubi/FTP-Server/releases)
 
 2. **Run the Application**:
    - Windows: Double-click `server_setup_windows.exe`.
