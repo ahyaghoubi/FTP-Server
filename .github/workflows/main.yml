@@ -28,11 +28,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyinstaller pyftpdlib
 
-      - name: Extract Version Tag
-        shell: bash
+      - name: Set Version Manually
         run: |
-          VERSION="${GITHUB_REF#refs/tags/}"
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "VERSION=v1.0.0" >> $GITHUB_ENV
 
       - name: Build Executable with PyInstaller
         run: |
@@ -68,8 +66,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Release ${{ github.ref_name }}
-          tag_name: ${{ github.ref }}
+          name: Release v1.0.0
+          tag_name: v1.0.0
           files: ./artifacts/**/*.*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
