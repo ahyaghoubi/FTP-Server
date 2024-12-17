@@ -24,15 +24,18 @@ jobs:
           python-version: "3.10"
 
       - name: Install Dependencies
+        shell: bash
         run: |
           python -m pip install --upgrade pip
           pip install pyinstaller pyftpdlib
 
       - name: Set Version Manually
+        shell: bash
         run: |
           echo "VERSION=v1.0.0" >> $GITHUB_ENV
 
       - name: Build Executable with PyInstaller
+        shell: bash
         run: |
           if [ "${{ runner.os }}" == "Windows" ]; then
             pyinstaller --onefile --windowed --name server_setup_windows_${{ env.VERSION }} server_setup.py
