@@ -1,6 +1,5 @@
 name: Build and Release Executables
 
-# Trigger on version tags and allow manual triggering
 on:
   push:
     tags:
@@ -44,10 +43,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: server_setup_${{ matrix.os }}
-          path: |
-            dist/server_setup_windows.exe
-            dist/server_setup_macos
-            dist/server_setup_linux
+          path: dist/*
 
   release:
     name: Create GitHub Release
@@ -60,7 +56,7 @@ jobs:
         with:
           path: ./artifacts
 
-      - name: List Artifacts (Debugging)
+      - name: List Artifacts for Debugging
         run: ls -R ./artifacts
 
       - name: Create Release and Upload Files
@@ -68,9 +64,6 @@ jobs:
         with:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
-          files: |
-            ./artifacts/server_setup_windows/*
-            ./artifacts/server_setup_macos/*
-            ./artifacts/server_setup_linux/*
+          files: ./artifacts/**/*   # Upload all artifacts to the release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
