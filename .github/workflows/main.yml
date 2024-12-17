@@ -28,21 +28,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyinstaller pyftpdlib
 
+      - name: Extract Version Tag
+        run: |
+          VERSION=$(echo "${GITHUB_REF}" | sed 's|refs/tags/||')
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
       - name: Build Executable with PyInstaller
         run: |
           if [ "${{ runner.os }}" == "Windows" ]; then
-            pyinstaller --onefile --windowed --name server_setup_windows server_setup.py
+            pyinstaller --onefile --windowed --name server_setup_windows_${{ env.VERSION }} server_setup.py
           elif [ "${{ runner.os }}" == "macOS" ]; then
-            pyinstaller --onefile --windowed --name server_setup_macos server_setup.py
+            pyinstaller --onefile --windowed --name server_setup_macos_${{ env.VERSION }} server_setup.py
+            # Remove unnecessary macOS files
+            rm -f dist/*.icns dist/Info.plist
           else
-            pyinstaller --onefile --name server_setup_linux server_setup.py
+            pyinstaller --onefile --name server_setup_linux_${{ env.VERSION }} server_setup.py
           fi
-        shell: bash
 
       - name: Upload Executable as Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: server_setup_${{ matrix.os }}
+          name: server_setup_${{ matrix.os }}_${{ env.VERSION }}
           path: dist/*
 
   release:
@@ -59,11 +65,11 @@ jobs:
       - name: List Artifacts for Debugging
         run: ls -R ./artifacts
 
-      - name: Create Release and Upload Files
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Release ${{ github.ref_name }}
-          tag_name: ${{ github.ref_name }}
-          files: ./artifacts/**/*   # Upload all artifacts to the release
+          name: Release ${{ env.VERSION }}
+          tag_name: ${{ github.ref }}
+          files: ./artifacts/**/*.*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
