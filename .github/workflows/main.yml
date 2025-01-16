@@ -3,7 +3,7 @@ name: Build and Release Executables
 on:
   push:
     tags:
-      - "v*.*.*"  # Trigger on tags like v1.0.0
+      - "v*.*.*"  # Trigger on tags like v2.0.0
   workflow_dispatch:
 
 jobs:
@@ -32,7 +32,7 @@ jobs:
       - name: Set Version Manually
         shell: bash
         run: |
-          echo "VERSION=v1.0.0" >> $GITHUB_ENV
+          echo "VERSION=v2.0.0" >> $GITHUB_ENV
 
       - name: Build Executable with PyInstaller
         shell: bash
@@ -69,8 +69,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Release v1.0.0
-          tag_name: v1.0.0
+          name: Release v2.0.0
+          tag_name: v2.0.0
           files: |
             ./artifacts/**/*.*
         env:
